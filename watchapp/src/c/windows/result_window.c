@@ -1,4 +1,6 @@
+#include "../kiesl.h"
 #include "result_window.h"
+#include "menu_window.h"
 
 static TextLayer *text_layer;
 
@@ -18,7 +20,11 @@ void result_update_clock() {
 
 
 static void result_select_click_handler(ClickRecognizerRef recognizer, void *context) {
-	/* window_stack_pop_all(); */
+	window_stack_pop(false); // result window
+	window_stack_pop(false); // workout window
+	window_stack_pop(false); // countdown window
+	window_stack_pop(false); // menu window
+	menu_window_push();
 }
 
 
@@ -51,10 +57,24 @@ static void window_load(Window *window) {
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_bounds(window_layer);
 
-	text_layer = text_layer_create(GRect((bounds.size.w - WIDTH) / 2, (bounds.size.h - HEIGHT) / 2, WIDTH, HEIGHT));
+	text_layer = text_layer_create(GRect((bounds.size.w - ACTION_BAR_WIDTH - WIDTH) / 2, (bounds.size.h - HEIGHT) / 2, WIDTH, HEIGHT));
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
 	layer_add_child(window_layer, text_layer_get_layer(text_layer));
+
+	ActionBarLayer *action_bar; 
+	action_bar = action_bar_layer_create();
+	action_bar_layer_add_to_window(action_bar, window);
+	action_bar_layer_set_click_config_provider(action_bar, (ClickConfigProvider)result_click_config_provider);
+
+	GBitmap *increment_icon, *decrement_icon, *accept_icon;
+	increment_icon = gbitmap_create_with_resource(RESOURCE_ID_ICON_INCREMENT);
+	decrement_icon = gbitmap_create_with_resource(RESOURCE_ID_ICON_DECREMENT);
+	accept_icon = gbitmap_create_with_resource(RESOURCE_ID_ICON_ACCEPT);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_UP, increment_icon, true);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_DOWN, decrement_icon, true);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_SELECT, accept_icon, true);
+
 
 	result_update_clock();
 }

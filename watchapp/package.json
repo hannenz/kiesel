@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {},
   "pebble": {
-    "displayName": "Kiesl",
+    "displayName": "KiesL",
     "uuid": "a2c4a833-d340-4d2c-a3cd-6df5114e3733",
     "sdkVersion": "3",
     "enableMultiJS": true,
@@ -27,23 +27,27 @@
 		  {
 			  "type": "bitmap",
 			  "name": "ICON_INCREMENT",
-			  "file": "increment_icon.png",
-			  "memoryFormat": "Smallest",
-			  "spaceOptimization": "memory"
+			  "file": "increment.png"
 		  },
 		  {
 			  "type": "bitmap",
 			  "name": "ICON_DECREMENT",
-			  "file": "decrement_icon.png",
-			  "memoryFormat": "Smallest",
-			  "spaceOptimization": "memory"
+			  "file": "decrement.png"
 		  },
 		  {
 			  "type": "bitmap",
 			  "name": "ICON_PLAY",
-			  "file": "play_icon.png",
-			  "memoryFormat": "Smallest",
-			  "spaceOptimization": "memory"
+			  "file": "play.png"
+		  },
+		  {
+			  "type": "bitmap",
+			  "name": "ICON_ACCEPT",
+			  "file": "accept.png"
+		  },
+		  {
+			  "type": "bitmap",
+			  "name": "ICON_CANCEL",
+			  "file": "cancel.png"
 		  }
 	  ]
     }

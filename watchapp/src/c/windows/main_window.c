@@ -1,3 +1,4 @@
+#include "../kiesl.h"
 #include "main_window.h"
 #include "countdown_window.h"
 #include "menu_window.h"

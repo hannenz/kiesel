@@ -1,3 +1,4 @@
+#include "../kiesl.h"
 #include "workout_window.h"
 #include "countdown_window.h"
 #include "result_window.h"
@@ -18,8 +19,8 @@ typedef enum {
 	PHASE_HOLD
 } Phase;
 
-static State state;
-static Phase phase;
+static State state = STATE_COUNTDOWN;
+static Phase phase = PHASE_ACTIVE;
 
 void workout_update_clock() {
 
@@ -36,7 +37,17 @@ static void layer_update_proc(Layer *layer, GContext *ctx) {
 	GRect bounds = layer_get_bounds(layer);
 	int angle = elapsed * 3;
 	GRect frame = grect_inset(bounds, GEdgeInsets(4));
-	graphics_context_set_fill_color(ctx, GColorBlack);
+
+	if (phase == PHASE_ACTIVE) {
+		graphics_context_set_fill_color(ctx, GColorWhite);
+		graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+		graphics_context_set_fill_color(ctx, GColorBlack);
+	}
+	else {
+		graphics_context_set_fill_color(ctx, GColorBlack);
+		graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+		graphics_context_set_fill_color(ctx, GColorWhite);
+	}
 	graphics_fill_radial(ctx, frame, GOvalScaleModeFitCircle, 20, 0, DEG_TO_TRIGANGLE(angle));
 }
 
@@ -46,7 +57,7 @@ static void workout_tick_handler(struct tm *tick_time, TimeUnits units_changed) 
 		if (elapsed == 0) {
 			state = STATE_WORKOUT;
 			phase = PHASE_ACTIVE;
-			vibes_double_pulse();
+			vibes_long_pulse();
 		}
 	}
 	else {
@@ -66,14 +77,20 @@ static void workout_tick_handler(struct tm *tick_time, TimeUnits units_changed) 
 			vibes_double_pulse();
 		}
 
-		layer_mark_dirty(canvas);
+		if (elapsed == 999) {
+			// abort
+			countdown_select_click_handler();
+		}
+
 	}
 
+	layer_mark_dirty(canvas);
 	workout_update_clock();
 }
 
 
 static void countdown_select_click_handler(ClickRecognizerRef recognizer, void *context) {
+	tick_timer_service_unsubscribe();
 	result_window_push();
 }
 
@@ -90,15 +107,16 @@ static void window_load(Window *window) {
 	text_layer_set_text(text_layer, "Start workout");
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
-	layer_add_child(window_layer, text_layer_get_layer(text_layer));
 
 	canvas = layer_create(bounds);
 	layer_set_update_proc(canvas, layer_update_proc);
 	layer_add_child(window_layer, canvas);
+	layer_add_child(window_layer, text_layer_get_layer(text_layer));
 
 	// Set elapsed to countdown start value
 	elapsed = count;
 	state = STATE_COUNTDOWN;
+	phase = PHASE_ACTIVE;
 
 	tick_timer_service_subscribe(SECOND_UNIT, workout_tick_handler);
 }
@@ -116,6 +134,7 @@ void workout_window_push() {
 			.load = window_load,
 			.unload = window_unload
 	});
+
 	
 	window_stack_push(window, true);
 	workout_update_clock();

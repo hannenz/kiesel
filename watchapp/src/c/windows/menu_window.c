@@ -1,3 +1,4 @@
+#include "../kiesl.h"
 #include "menu_window.h"
 #include "countdown_window.h"
 
@@ -18,7 +19,7 @@ SimpleMenuItem menu_items[] = {
 SimpleMenuSection sections[1];
 
 
-static void on_menu_selected(int index, void *ctx) {
+void on_menu_selected(int index, void *ctx) {
 	countdown_window_push((const char*)menu_items[index].title);
 }
 

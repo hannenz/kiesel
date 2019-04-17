@@ -1,3 +1,4 @@
+#include "../kiesl.h"
 #include "countdown_window.h"
 #include "workout_window.h"
 
@@ -54,7 +55,7 @@ static void window_load(Window *window) {
 	text_layer_set_font(tl1, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
 	layer_add_child(window_layer, text_layer_get_layer(tl1));
 
-	text_layer = text_layer_create(GRect((bounds.size.w - WIDTH) / 2, (bounds.size.h - HEIGHT) / 2, WIDTH, HEIGHT));
+	text_layer = text_layer_create(GRect((bounds.size.w - ACTION_BAR_WIDTH - WIDTH) / 2, (bounds.size.h - HEIGHT) / 2, WIDTH, HEIGHT));
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	text_layer_set_text(text_layer, message);
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
