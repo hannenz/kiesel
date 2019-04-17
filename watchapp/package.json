@@ -1,12 +1,12 @@
 {
-  "name": "kiesel",
+  "name": "kiesl",
   "author": "hannenz",
   "version": "1.0.0",
-  "keywords": ["pebble-app"],
+  "keywords": ["pebble-app", "kieser", "workout", "hit", "timer"],
   "private": true,
   "dependencies": {},
   "pebble": {
-    "displayName": "kiesel",
+    "displayName": "Kiesl",
     "uuid": "a2c4a833-d340-4d2c-a3cd-6df5114e3733",
     "sdkVersion": "3",
     "enableMultiJS": true,
