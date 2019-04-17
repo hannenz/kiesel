@@ -2,7 +2,6 @@
 #include "countdown_window.h"
 #include "result_window.h"
 
-static Window *window;
 static TextLayer *text_layer;
 static Layer *canvas;
 int elapsed;
@@ -75,7 +74,6 @@ static void workout_tick_handler(struct tm *tick_time, TimeUnits units_changed) 
 
 
 static void countdown_select_click_handler(ClickRecognizerRef recognizer, void *context) {
-	window_stack_pop(true);
 	result_window_push();
 }
 
@@ -111,16 +109,16 @@ static void window_unload(Window *window) {
 }
 
 void workout_window_push() {
-	if (!window) {
-		window = window_create();
-		window_set_click_config_provider(window, (ClickConfigProvider)countdown_click_config_provider);
-		window_set_window_handlers(window, (WindowHandlers) {
-				.load = window_load,
-				.unload = window_unload
-		});
-	}
+	Window *window;
+	window = window_create();
+	window_set_click_config_provider(window, (ClickConfigProvider)countdown_click_config_provider);
+	window_set_window_handlers(window, (WindowHandlers) {
+			.load = window_load,
+			.unload = window_unload
+	});
 	
 	window_stack_push(window, true);
+	workout_update_clock();
 }
 
 

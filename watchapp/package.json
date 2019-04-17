@@ -23,7 +23,29 @@
       "dummy"
     ],
     "resources": {
-      "media": []
+      "media": [
+		  {
+			  "type": "bitmap",
+			  "name": "ICON_INCREMENT",
+			  "file": "increment_icon.png",
+			  "memoryFormat": "Smallest",
+			  "spaceOptimization": "memory"
+		  },
+		  {
+			  "type": "bitmap",
+			  "name": "ICON_DECREMENT",
+			  "file": "decrement_icon.png",
+			  "memoryFormat": "Smallest",
+			  "spaceOptimization": "memory"
+		  },
+		  {
+			  "type": "bitmap",
+			  "name": "ICON_PLAY",
+			  "file": "play_icon.png",
+			  "memoryFormat": "Smallest",
+			  "spaceOptimization": "memory"
+		  }
+	  ]
     }
   }
 }

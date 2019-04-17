@@ -5,11 +5,9 @@
 static Window *window;
 
 
-
 static void main_window_select_click_handler(ClickRecognizerRef recognizer, void *context) {
 	menu_window_push();
 }
-
 
 
 static void click_config_provider(void *context) {
@@ -17,25 +15,23 @@ static void click_config_provider(void *context) {
 }
 
 
-
 static void window_load(Window *window) {
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_bounds(window_layer);
 
-	TextLayer *text_layer = text_layer_create(bounds);
-	text_layer_set_text(text_layer, "Welcome");
+	TextLayer *text_layer = text_layer_create(GRect(0, (bounds.size.h - 42)  * 1 / 3, bounds.size.w, 42));
+	text_layer_set_text(text_layer, "KiesL");
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
+
 	layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
-
 
 
 static void window_unload(Window *window) {
 	window_destroy(window);
 }
-
 
 
 void main_window_push() {
@@ -52,5 +48,4 @@ void main_window_push() {
 	
 	window_stack_push(window, true);
 }
-
 

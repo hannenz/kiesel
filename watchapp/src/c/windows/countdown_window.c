@@ -1,7 +1,6 @@
 #include "countdown_window.h"
 #include "workout_window.h"
 
-static Window *window;
 static TextLayer *text_layer;
 
 
@@ -21,7 +20,6 @@ void countdown_update_clock() {
 
 
 static void countdown_select_click_handler(ClickRecognizerRef recognizer, void *context) {
-	window_stack_pop(true);
 	workout_window_push();
 }
 
@@ -62,6 +60,20 @@ static void window_load(Window *window) {
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
 	layer_add_child(window_layer, text_layer_get_layer(text_layer));
 
+	ActionBarLayer *action_bar;
+	action_bar = action_bar_layer_create();
+	action_bar_layer_add_to_window(action_bar, window);
+	action_bar_layer_set_click_config_provider(action_bar, (ClickConfigProvider)countdown_click_config_provider);
+
+	GBitmap *increment_icon, *decrement_icon, *play_icon;
+
+	increment_icon = gbitmap_create_with_resource(RESOURCE_ID_ICON_INCREMENT);
+	decrement_icon = gbitmap_create_with_resource(RESOURCE_ID_ICON_DECREMENT);
+	play_icon = gbitmap_create_with_resource(RESOURCE_ID_ICON_PLAY);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_UP, increment_icon, true);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_DOWN, decrement_icon, true);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_SELECT, play_icon, true);
+
 	countdown_update_clock();
 
 }
@@ -75,14 +87,13 @@ void countdown_window_push(const char *mssg) {
 
 	strncpy(message, mssg, sizeof(message));
 
-	if (!window) {
-		window = window_create();
-		window_set_click_config_provider(window, (ClickConfigProvider)countdown_click_config_provider);
-		window_set_window_handlers(window, (WindowHandlers) {
-				.load = window_load,
-				.unload = window_unload
-		});
-	}
+	Window *window;
+	window = window_create();
+	/* window_set_click_config_provider(window, (ClickConfigProvider)countdown_click_config_provider); */
+	window_set_window_handlers(window, (WindowHandlers) {
+			.load = window_load,
+			.unload = window_unload
+	});
 	
 	window_stack_push(window, true);
 }

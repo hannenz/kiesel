@@ -1,15 +1,15 @@
 #include "menu_window.h"
 #include "countdown_window.h"
 
-static Window *window;
+/* static Window *window; */
 SimpleMenuLayer *menu_layer;
 
 SimpleMenuItem menu_items[] = {
-	{ "A7", NULL, NULL, on_menu_selected },
-	{ "B1", NULL, NULL, on_menu_selected },
-	{ "B3", NULL, NULL, on_menu_selected },
-	{ "F2.1", NULL, NULL, on_menu_selected },
-	{ "C1", NULL, NULL, on_menu_selected },
+	{ "A7", "68 kg+", NULL, on_menu_selected },
+	{ "B1", "112 kg.", NULL, on_menu_selected },
+	{ "B3", "114 kg+", NULL, on_menu_selected },
+	{ "F2.1", "64 kg.", NULL, on_menu_selected },
+	{ "C1", "112 kg", NULL, on_menu_selected },
 	{ "C3", NULL, NULL, on_menu_selected },
 	{ "D7", NULL, NULL, on_menu_selected },
 	{ "E2", NULL, NULL, on_menu_selected }
@@ -43,13 +43,13 @@ static void window_unload(Window *window) {
 }
 
 void menu_window_push() {
-	if (!window) {
-		window = window_create();
-		window_set_window_handlers(window, (WindowHandlers) {
-				.load = window_load,
-				.unload = window_unload
-		});
-	}
+	Window *window;
+
+	window = window_create();
+	window_set_window_handlers(window, (WindowHandlers) {
+			.load = window_load,
+			.unload = window_unload
+	});
 	
 	window_stack_push(window, true);
 }
