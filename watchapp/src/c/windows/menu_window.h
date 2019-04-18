@@ -2,4 +2,4 @@
 #include <pebble.h>
 
 void menu_window_push();
-void on_menu_selected(int, void*);
+void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data);
