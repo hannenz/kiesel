@@ -4,6 +4,8 @@
 
 static TextLayer *text_layer;
 
+#define KEY_COUNTDOWN 8
+
 
 int count = 3;
 
@@ -21,6 +23,7 @@ void countdown_update_clock() {
 
 
 static void countdown_select_click_handler(ClickRecognizerRef recognizer, void *context) {
+	persist_write_int(KEY_COUNTDOWN, count);
 	workout_window_push();
 }
 
@@ -95,6 +98,13 @@ void countdown_window_push(const char *mssg) {
 			.load = window_load,
 			.unload = window_unload
 	});
+
+	if (persist_exists(KEY_COUNTDOWN)) {
+		count = persist_read_int(KEY_COUNTDOWN);
+	}
+	else {
+		count = 3;
+	}
 	
 	window_stack_push(window, true);
 }
